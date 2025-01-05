@@ -19,6 +19,7 @@ DATA = {
     # можете добавить свои рецепты ;)
 }
 
+
 # Напишите ваш обработчик. Используйте DATA как источник данных
 # Результат - render(request, 'calculator/index.html', context)
 # В качестве контекста должен быть передан словарь с рецептом:
@@ -28,3 +29,12 @@ DATA = {
 #     'ингредиент2': количество2,
 #   }
 # }
+def get_recipie_view(request, dish):
+    servings = int(request.GET.get('servings', 1))
+    multiplied_dish ={}
+    for key,value in DATA[dish].items():
+        multiplied_dish[key]=round(value*servings,2)
+
+    context = {'recipe': multiplied_dish,'servings':servings}
+
+    return render(request, 'calculator/index.html', context)
